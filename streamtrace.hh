@@ -31,6 +31,7 @@
  * @BERI_LICENSE_HEADER_END@
  */
 
+#pragma once
 #include "cheri.hh"
 #include <vector>
 #include <memory>

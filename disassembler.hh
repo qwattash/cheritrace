@@ -30,6 +30,7 @@
  * @BERI_LICENSE_HEADER_END@
  */
 
+#pragma once
 #include <string>
 #include <memory>
 #include <vector>
@@ -84,6 +85,37 @@ struct operand_info {
 	 * is valid only if the operand is a float immediate.
 	 */
 	double fp_immediate;
+	/**
+	 * Returns the GPR number for this operand.  If this
+	 * operand does not relate to a GPR, returns -1.
+	 */
+	int gpr_number() const
+	{
+		if (register_number < 32)
+			return register_number;
+		return -1;
+	}
+	/**
+	 * Returns the FPR number for this operand.  If this
+	 * operand does not relate to a FPR, returns -1.
+	 */
+	int fpr_number() const
+	{
+		if ((register_number > 31) && (register_number < 64))
+			return register_number - 32;
+		return -1;
+	}
+	/**
+	 * Returns the capability register number for this operand.
+	 * If this operand does not relate to a capability
+	 * register, returns -1.
+	 */
+	int capreg_number() const
+	{
+		if ((register_number > 63) && (register_number < 96))
+			return register_number - 64;
+		return -1;
+	}
 };
 
 /**

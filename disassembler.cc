@@ -29,7 +29,6 @@
  *
  * @BERI_LICENSE_HEADER_END@
  */
-
 #include "cheri.hh"
 #include "disassembler.hh"
 #include "llvm/Support/MemoryBuffer.h"
