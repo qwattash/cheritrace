@@ -354,6 +354,19 @@ struct debug_trace_entry
 		return -1;
 	}
 	/**
+	 * Returns the hardware capability register number for the value stored in
+	 * `reg_value`.  If this instruction does not relate to an hardware capability
+	 * register, returns -1.
+	 */
+	int caphwreg_number() const
+	{
+		if ((reg_num > 95) && (reg_num < 128))
+		{
+			return reg_num - 96;
+		}
+		return -1;
+	}
+	/**
 	 * Retrun the value of the register related to this instruction as
 	 * a capability register.
 	 */
@@ -440,6 +453,16 @@ struct register_set
 	 * is a valid capability.
 	 */
 	std::bitset<32> valid_caps = 0;
+	/**
+	 * Hardware capability registers
+	 */
+	std::array<capability_register, 32> cap_hwreg;
+	/**
+	 * Bitfield indicating whether the capability registers contain a known value.
+	 * Same as valid_caps.
+	 */
+	std::bitset<32> valid_hwcaps = 0;
+
 };
 
 struct trace_view;
@@ -471,7 +494,7 @@ struct trace
 	 * loading.  The return value should be false if the traces should continue
 	 * loading, true otherwise.
 	 */
-	typedef std::function<bool(trace*, uint64_t, bool)> notifier;
+	typedef std::function<bool(std::shared_ptr<trace>, uint64_t, bool)> notifier;
 	/**
 	 * Callback for scanning the streamtrace.  The first argument is the trace
 	 * entry, the second the index in the trace.  The function should return
